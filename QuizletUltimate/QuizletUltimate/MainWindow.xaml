@@ -1,0 +1,701 @@
+﻿<Window x:Class="QuizletUltimate.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Title="Quizlet Ultimate"
+        WindowState="Maximized"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="CanResize"
+        ShowInTaskbar="True"
+        Background="{DynamicResource WindowBackgroundBrush}"
+        KeyDown="Window_KeyDown">
+
+    <Window.Resources>
+        <!-- Font Size Variables -->
+        <sys:Double x:Key="StandardFontSize">18</sys:Double>
+
+        <!-- Your New Color Palette -->
+        <SolidColorBrush x:Key="Blue1" Color="#0466C8"/>
+        <SolidColorBrush x:Key="Blue2" Color="#0353A4"/>
+        <SolidColorBrush x:Key="Blue3" Color="#023E7D"/>
+        <SolidColorBrush x:Key="Blue4" Color="#002855"/>
+        <SolidColorBrush x:Key="Blue5" Color="#001845"/>
+        <SolidColorBrush x:Key="Blue6" Color="#001233"/>
+        <SolidColorBrush x:Key="Gray1" Color="#33415C"/>
+        <SolidColorBrush x:Key="Gray2" Color="#5C677D"/>
+        <SolidColorBrush x:Key="Gray3" Color="#7D8597"/>
+        <SolidColorBrush x:Key="Gray4" Color="#979DAC"/>
+
+        <!-- Supporting colors -->
+        <SolidColorBrush x:Key="SuccessGreen" Color="#10B981"/>
+        <SolidColorBrush x:Key="ErrorRed" Color="#EF4444"/>
+        <SolidColorBrush x:Key="PureWhite" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="TextLight" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#001233"/>
+
+        <!-- Gradient Brushes -->
+        <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#001233" Offset="0"/>
+            <GradientStop Color="#001845" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="CardBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#33415C" Offset="0"/>
+            <GradientStop Color="#5C677D" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="LightCardBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#5C677D" Offset="0"/>
+            <GradientStop Color="#7D8597" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="BlueCardBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#023E7D" Offset="0"/>
+            <GradientStop Color="#002855" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="HeaderGradientBrush" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#0466C8" Offset="0"/>
+            <GradientStop Color="#0353A4" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="PrimaryButtonBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#0466C8" Offset="0"/>
+            <GradientStop Color="#0353A4" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="SecondaryButtonBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#33415C" Offset="0"/>
+            <GradientStop Color="#5C677D" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="AccentButtonBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#023E7D" Offset="0"/>
+            <GradientStop Color="#002855" Offset="1"/>
+        </LinearGradientBrush>
+
+        <!-- Shadow Effects -->
+        <DropShadowEffect x:Key="CardShadow" BlurRadius="20" ShadowDepth="8" Opacity="0.3" Color="#000000"/>
+        <DropShadowEffect x:Key="ButtonShadow" BlurRadius="12" ShadowDepth="4" Opacity="0.25" Color="#000000"/>
+        <DropShadowEffect x:Key="TextShadow" BlurRadius="4" ShadowDepth="2" Opacity="0.3" Color="#000000"/>
+        <DropShadowEffect x:Key="HoverShadow" BlurRadius="16" ShadowDepth="6" Opacity="0.35" Color="#000000"/>
+
+        <!-- Button Styles -->
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryButtonBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextLight}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect" Value="{StaticResource ButtonShadow}"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="12"
+                                Effect="{TemplateBinding Effect}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Effect" Value="{StaticResource HoverShadow}"/>
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.02" ScaleY="1.02"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonStyle}">
+            <Setter Property="Background" Value="{StaticResource SecondaryButtonBrush}"/>
+        </Style>
+
+        <Style x:Key="AccentButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonStyle}">
+            <Setter Property="Background" Value="{StaticResource AccentButtonBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextLight}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="28,16"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+
+        <Style x:Key="ActionButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonStyle}">
+            <Setter Property="Padding" Value="28,16"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
+        <!-- Multiple Choice Button Style -->
+        <Style x:Key="MultipleChoiceButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource BlueCardBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextLight}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Blue1}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="FontSize" Value="{StaticResource StandardFontSize}"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect" Value="{StaticResource ButtonShadow}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12"
+                                Effect="{TemplateBinding Effect}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Width="32" Height="32" CornerRadius="16" 
+                                        Background="{StaticResource Blue1}" Margin="0,0,16,0">
+                                    <TextBlock Text="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" 
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               FontWeight="Bold" FontSize="14" Foreground="{StaticResource TextLight}"/>
+                                </Border>
+                                <ContentPresenter Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource Blue1}"/>
+                                <Setter Property="Effect" Value="{StaticResource HoverShadow}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Matching/Ordering Button Style -->
+        <Style x:Key="MatchingOrderingButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource BlueCardBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextLight}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Blue1}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="12,6,12,6"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="FontSize" Value="{StaticResource StandardFontSize}"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect" Value="{StaticResource ButtonShadow}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12"
+                                Effect="{TemplateBinding Effect}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Width="28" Height="28" CornerRadius="14" 
+                                        Background="{StaticResource Blue1}" Margin="0,0,12,0">
+                                    <TextBlock Text="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" 
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               FontWeight="Bold" FontSize="12" Foreground="{StaticResource TextLight}"/>
+                                </Border>
+                                <ContentPresenter Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource Blue1}"/>
+                                <Setter Property="Effect" Value="{StaticResource HoverShadow}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- True/False Button Style -->
+        <Style x:Key="TrueFalseButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource BlueCardBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextLight}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Blue1}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="80,50"/>
+            <Setter Property="Margin" Value="20"/>
+            <Setter Property="FontSize" Value="{StaticResource StandardFontSize}"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect" Value="{StaticResource ButtonShadow}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="20"
+                                Effect="{TemplateBinding Effect}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Border Grid.Row="0" Width="120" Height="120" CornerRadius="60" 
+                                        Background="{StaticResource Blue1}" Margin="0,0,0,30" HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" 
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               FontWeight="Bold" FontSize="24" Foreground="{StaticResource TextLight}"/>
+                                </Border>
+
+                                <ContentPresenter Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource Blue1}"/>
+                                <Setter Property="Effect" Value="{StaticResource HoverShadow}"/>
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.02" ScaleY="1.02"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Card Styles -->
+        <Style x:Key="AnswerBoxStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource CardBackgroundBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="32"/>
+            <Setter Property="Margin" Value="16"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="Effect" Value="{StaticResource CardShadow}"/>
+        </Style>
+
+        <Style x:Key="HeaderCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource HeaderGradientBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="24,16"/>
+            <Setter Property="Margin" Value="16"/>
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="Effect" Value="{StaticResource CardShadow}"/>
+        </Style>
+
+        <!-- Text Styles -->
+        <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextLight}"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontWeight" Value="Regular"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="LineHeight" Value="24"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="ModeTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextLight}"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Effect" Value="{StaticResource TextShadow}"/>
+        </Style>
+
+        <Style x:Key="QuestionTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextLight}"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="LineHeight" Value="32"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="IndicatorStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextLight}"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="ScoreTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextLight}"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- TextBox Style -->
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="{StaticResource PureWhite}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Blue1}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="16,12"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12"
+                                Effect="{StaticResource ButtonShadow}">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource Blue1}"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource Blue1}"/>
+                                <Setter Property="BorderThickness" Value="3"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <!-- Background -->
+        <Border Background="{StaticResource WindowBackgroundBrush}"/>
+
+        <!-- Decorative Elements -->
+        <Canvas>
+            <Ellipse Width="400" Height="400" Canvas.Left="-150" Canvas.Top="-150" Opacity="0.1">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#0466C8" Offset="0"/>
+                        <GradientStop Color="Transparent" Offset="1"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+            <Ellipse Width="600" Height="600" Canvas.Right="-200" Canvas.Bottom="-200" Opacity="0.08">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#0353A4" Offset="0"/>
+                        <GradientStop Color="Transparent" Offset="1"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+        </Canvas>
+
+        <!-- Main Content Grid -->
+        <Grid Margin="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="207"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header Row -->
+            <Grid Grid.Row="0" Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <Grid>
+                        <Button x:Name="CategoriesButton" Style="{StaticResource ButtonStyle}" Click="CategoriesButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="☰" FontSize="16" Margin="0,0,8,0"/>
+                                <TextBlock Text="Categories"/>
+                            </StackPanel>
+                        </Button>
+                        <Popup x:Name="CategoriesPopup" PlacementTarget="{Binding ElementName=CategoriesButton}" 
+                               Placement="Bottom" StaysOpen="False">
+                            <Border Background="{StaticResource CardBackgroundBrush}" 
+                                    BorderBrush="{StaticResource Blue1}" BorderThickness="2" 
+                                    CornerRadius="8" Padding="12" Effect="{StaticResource CardShadow}"
+                                    Width="{Binding ActualWidth, ElementName=CategoriesButton}">
+                                <StackPanel>
+                                    <TextBlock Text="Question Types" FontWeight="Bold" Foreground="{StaticResource TextLight}" 
+                                               Margin="0,0,0,8" HorizontalAlignment="Center" FontSize="14"/>
+                                    <CheckBox x:Name="MatchingCheckBox" Content="Matching" 
+                                        Foreground="{StaticResource TextLight}" IsChecked="True" Margin="0,3" FontSize="14"/>
+                                    <CheckBox x:Name="MultipleChoiceCheckBox" Content="Multiple Choice" 
+                                        Foreground="{StaticResource TextLight}" IsChecked="True" Margin="0,3" FontSize="14"/>
+                                    <CheckBox x:Name="OrderingCheckBox" Content="Ordering" 
+                                        Foreground="{StaticResource TextLight}" IsChecked="True" Margin="0,3" FontSize="14"/>
+                                    <CheckBox x:Name="TextInputCheckBox" Content="Text Input" 
+                                        Foreground="{StaticResource TextLight}" IsChecked="True" Margin="0,3" FontSize="14"/>
+                                    <CheckBox x:Name="TrueFalseCheckBox" Content="True/False" 
+                                        Foreground="{StaticResource TextLight}" IsChecked="True" Margin="0,3" FontSize="14"/>
+                                    <Button Content="Apply" Style="{StaticResource ButtonStyle}" 
+                                            Click="ApplyFiltersButton_Click" Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                    <Button x:Name="ImportFileButton" Style="{StaticResource ButtonStyle}" Click="ImportFileButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📂" FontSize="16" Margin="0,0,8,0"/>
+                            <TextBlock Text="Import"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="SampleButton" Style="{StaticResource ButtonStyle}" Click="SampleButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📄" FontSize="16" Margin="0,0,8,0"/>
+                            <TextBlock Text="Sample"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <!-- Score Display -->
+                <Border Grid.Column="2" CornerRadius="12" Effect="{StaticResource CardShadow}" 
+                        Height="{Binding ActualHeight, ElementName=RestartButton}" Margin="0,0,16,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" CornerRadius="12,0,0,12" Padding="12,12">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#059669" Offset="0"/>
+                                    <GradientStop Color="#10B981" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="✓" FontSize="16" Foreground="{StaticResource TextLight}" 
+                                           Margin="0,0,4,0" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="CorrectCount" Text="0" Style="{StaticResource ScoreTextStyle}" 
+                                           Foreground="{StaticResource TextLight}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="1" Padding="12,12">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#DC2626" Offset="0"/>
+                                    <GradientStop Color="#EF4444" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="✗" FontSize="16" Foreground="{StaticResource TextLight}" 
+                                           Margin="0,0,4,0" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="IncorrectCount" Text="0" Style="{StaticResource ScoreTextStyle}" 
+                                           Foreground="{StaticResource TextLight}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="2" CornerRadius="0,12,12,0" Padding="12,12">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#33415C" Offset="0"/>
+                                    <GradientStop Color="#5C677D" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="📋" FontSize="16" Foreground="{StaticResource TextLight}" 
+                                           Margin="0,0,4,0" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="TaskCount" Text="0" Style="{StaticResource ScoreTextStyle}" 
+                                           Foreground="{StaticResource TextLight}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <StackPanel Grid.Column="3" Orientation="Horizontal">
+                    <Button x:Name="RestartButton" Style="{StaticResource SecondaryButtonStyle}" Click="RestartButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔄" FontSize="16" Margin="0,0,8,0"/>
+                            <TextBlock Text="Restart (R)"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="QuitButton" Style="{StaticResource SecondaryButtonStyle}" Click="QuitButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="❌" FontSize="16" Margin="0,0,8,0"/>
+                            <TextBlock Text="Quit (ESC)"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <!-- Mode Indicator -->
+            <Border Grid.Row="1" Style="{StaticResource HeaderCardStyle}" MaxWidth="600" HorizontalAlignment="Center">
+                <Grid>
+                    <TextBlock x:Name="ModeText" Text="Please import a JSON file" Style="{StaticResource ModeTextStyle}"/>
+                    <Border Height="3" VerticalAlignment="Bottom" Background="{StaticResource Gray4}" 
+                            CornerRadius="2" Margin="0,8,0,-8" Width="100"/>
+                </Grid>
+            </Border>
+
+            <!-- Question Card -->
+            <Border Grid.Row="2" Style="{StaticResource AnswerBoxStyle}" MinWidth="400" MaxWidth="1000" HorizontalAlignment="Center">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Background="{StaticResource Blue1}" CornerRadius="8" 
+                                Padding="16,8" HorizontalAlignment="Left">
+                            <TextBlock x:Name="QuestionHeaderText" Text="Question" Foreground="{StaticResource TextLight}" FontWeight="Bold" FontSize="14"/>
+                        </Border>
+
+                        <Border Grid.Column="2" x:Name="IndicatorBorder" Background="{StaticResource SuccessGreen}" 
+                                CornerRadius="8" Padding="16,8" HorizontalAlignment="Right" 
+                                Visibility="Hidden">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock x:Name="IndicatorIcon" Text="✓" FontSize="14" Foreground="{StaticResource TextLight}" Margin="0,0,8,0"/>
+                                <TextBlock x:Name="AnswerIndicator" Text="" Visibility="Hidden" 
+                                           Foreground="{StaticResource TextLight}" FontSize="14" FontWeight="Bold"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <TextBlock Grid.Row="1" x:Name="QuestionText" Style="{StaticResource QuestionTextStyle}" 
+                               Text="Question will appear here" MinHeight="60"/>
+                </Grid>
+            </Border>
+
+            <!-- Answer Panel -->
+            <Border Grid.Row="3" Style="{StaticResource AnswerBoxStyle}" x:Name="AnswerPanel" 
+                    MinWidth="1400" MaxWidth="1400" HorizontalAlignment="Center" MinHeight="400" 
+                    Margin="16,16,16,32">
+                <Grid x:Name="AnswerGrid">
+                    <Grid x:Name="TextInputDecorationGrid" Visibility="Collapsed">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
+                            <TextBlock Text="💭" FontSize="48" HorizontalAlignment="Center" Opacity="0.3"/>
+                            <TextBlock Text="Type your answer below" FontSize="16" Foreground="{StaticResource TextLight}" 
+                                       HorizontalAlignment="Center" Margin="0,10,0,0" Opacity="0.8"/>
+                        </StackPanel>
+
+                        <Grid Grid.Row="1" x:Name="TextInputContainer"/>
+
+                        <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0">
+                            <TextBlock Text="Press Enter or click Submit when ready" FontSize="14" 
+                                       Foreground="{StaticResource TextLight}" HorizontalAlignment="Center" Opacity="0.7"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!-- Action Buttons -->
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button x:Name="SubmitButton" Style="{StaticResource AccentButtonStyle}" 
+                        Click="SubmitButton_Click" IsEnabled="False" Padding="32,20" FontSize="20">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="📝" FontSize="20" Margin="0,0,10,0"/>
+                        <TextBlock Text="Submit Answer"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="NextQuestionButton" Style="{StaticResource ActionButtonStyle}" 
+                        Click="NextQuestionButton_Click" IsEnabled="False" Padding="32,20" FontSize="20">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="➡️" FontSize="20" Margin="0,0,10,0"/>
+                        <TextBlock Text="Next Question"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- Learn Button - Bottom Left Corner -->
+        <Button x:Name="LearnButton" Style="{StaticResource SecondaryButtonStyle}" 
+                Click="LearnButton_Click" 
+                HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                Margin="24,0,0,24">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="📚" FontSize="16" Margin="0,0,8,0"/>
+                <TextBlock Text="Study"/>
+            </StackPanel>
+        </Button>
+
+        <!-- Container for Help Button and Copyright -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,16,15">
+            <!-- Copyright -->
+            <TextBlock Text="© QuizletUltimate 1.0" FontSize="10" Foreground="Gray" VerticalAlignment="Bottom" Margin="0,0,6,8"/>
+
+            <!-- Help Button -->
+            <Button x:Name="HelpButton" Style="{StaticResource SecondaryButtonStyle}" 
+                Click="HelpButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="❓" FontSize="16" Margin="0,0,8,0"/>
+                    <TextBlock Text="Help"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

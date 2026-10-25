@@ -1,0 +1,329 @@
+﻿<Window x:Class="QuizletUltimate.LearnWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QuizletUltimate"
+        mc:Ignorable="d"
+        Title="QuizletUltimate - Learn" 
+        Width="800" Height="600"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{DynamicResource WindowBackgroundBrush}">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="Blue1" Color="#0466C8"/>
+        <SolidColorBrush x:Key="Blue2" Color="#0353A4"/>
+        <SolidColorBrush x:Key="Blue3" Color="#023E7D"/>
+        <SolidColorBrush x:Key="Blue4" Color="#002855"/>
+        <SolidColorBrush x:Key="Blue5" Color="#001845"/>
+        <SolidColorBrush x:Key="Blue6" Color="#001233"/>
+        <SolidColorBrush x:Key="Gray1" Color="#33415C"/>
+        <SolidColorBrush x:Key="Gray2" Color="#5C677D"/>
+        <SolidColorBrush x:Key="TextLight" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="CorrectAnswer" Color="#28A745"/>
+
+        <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#001233" Offset="0"/>
+            <GradientStop Color="#001845" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="CardBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#33415C" Offset="0"/>
+            <GradientStop Color="#5C677D" Offset="1"/>
+        </LinearGradientBrush>
+
+        <DropShadowEffect x:Key="CardShadow" BlurRadius="20" ShadowDepth="8" Opacity="0.3" Color="#000000"/>
+        <DropShadowEffect x:Key="BlueShadow" BlurRadius="3" ShadowDepth="1" Opacity="0.8" Color="#000000"/>
+
+        <Style x:Key="HeaderStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextLight}"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+        </Style>
+
+        <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextLight}"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0"/>
+        </Style>
+
+        <Style x:Key="SectionBoxStyle" TargetType="Border">
+            <Setter Property="Background" Value="#001845"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="Margin" Value="0,15,0,10"/>
+        </Style>
+
+        <Style x:Key="ContentStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextLight}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="LineHeight" Value="20"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+
+        <Style x:Key="BlueTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource Blue1}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Effect" Value="{StaticResource BlueShadow}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="LineHeight" Value="20"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+
+        <Style x:Key="AnswerItemStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource Gray1}"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="12"/>
+            <Setter Property="Margin" Value="0,4"/>
+        </Style>
+
+        <Style x:Key="CorrectAnswerStyle" TargetType="Border" BasedOn="{StaticResource AnswerItemStyle}">
+            <Setter Property="Background" Value="{StaticResource CorrectAnswer}"/>
+        </Style>
+
+        <!-- Converter for Question Type to Display Name -->
+        <local:QuestionTypeConverter x:Key="QuestionTypeConverter"/>
+
+        <!-- Converter for Index to Letter (A, B, C, etc.) -->
+        <local:IndexToLetterConverter x:Key="IndexToLetterConverter"/>
+
+        <!-- Converter for String to Visibility -->
+        <local:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+
+        <!-- Converter for Boolean to Style -->
+        <local:BooleanToStyleConverter x:Key="BooleanToStyleConverter"/>
+
+        <!-- Converter for Empty Check -->
+        <local:IsEmptyConverter x:Key="IsEmptyConverter"/>
+    </Window.Resources>
+
+    <Grid Margin="32">
+        <Border Background="{StaticResource CardBackgroundBrush}" 
+                CornerRadius="16" 
+                Effect="{StaticResource CardShadow}"
+                Padding="32">
+            <ScrollViewer VerticalScrollBarVisibility="Hidden" 
+                          HorizontalScrollBarVisibility="Disabled">
+                <StackPanel>
+                    <!-- Header -->
+                    <Grid Margin="0,0,0,24">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Background="{StaticResource Blue1}" 
+                                CornerRadius="12" Padding="16" Margin="0,0,16,0">
+                            <TextBlock Text="📚" FontSize="32" Foreground="{StaticResource TextLight}"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="QuizletUltimate - Learn Mode" Style="{StaticResource HeaderStyle}" Margin="0"/>
+                            <TextBlock Text="Review the questions and their correct answers" 
+                                       Style="{StaticResource ContentStyle}" Opacity="0.8"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Empty State -->
+                    <StackPanel x:Name="EmptyStatePanel" 
+                                Visibility="{Binding Converter={StaticResource IsEmptyConverter}, ConverterParameter='VisibleWhenEmpty'}">
+                        <Border Style="{StaticResource SectionBoxStyle}">
+                            <TextBlock Text="No Questions Loaded" Style="{StaticResource SectionHeaderStyle}"/>
+                        </Border>
+                        <TextBlock Text="Waiting for Questions to be loaded." 
+                                   Style="{StaticResource ContentStyle}" 
+                                   FontWeight="SemiBold" 
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Dynamic Questions -->
+                    <ItemsControl ItemsSource="{Binding}" 
+                                  Visibility="{Binding Converter={StaticResource IsEmptyConverter}, ConverterParameter='HiddenWhenEmpty'}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,16">
+                                    <!-- Multiple Choice -->
+                                    <ContentControl Visibility="{Binding Type, Converter={StaticResource StringToVisibilityConverter}, ConverterParameter='multiple_choice'}">
+                                        <StackPanel>
+                                            <Border Style="{StaticResource SectionBoxStyle}">
+                                                <TextBlock Text="{Binding Type, Converter={StaticResource QuestionTypeConverter}}" Style="{StaticResource SectionHeaderStyle}"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding QuestionText}" Style="{StaticResource ContentStyle}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                            <ItemsControl ItemsSource="{Binding Answers}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel Orientation="Vertical"/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border>
+                                                            <Border.Style>
+                                                                <MultiBinding Converter="{StaticResource BooleanToStyleConverter}">
+                                                                    <Binding Path="IsCorrect"/>
+                                                                    <Binding Source="{StaticResource CorrectAnswerStyle}"/>
+                                                                    <Binding Source="{StaticResource AnswerItemStyle}"/>
+                                                                </MultiBinding>
+                                                            </Border.Style>
+                                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding Index, Converter={StaticResource IndexToLetterConverter}}" 
+                                                                           Style="{StaticResource BlueTextStyle}" Margin="0,0,8,0"/>
+                                                                <TextBlock Text="{Binding Text}" Style="{StaticResource ContentStyle}" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </ContentControl>
+
+                                    <!-- Text Input -->
+                                    <ContentControl Visibility="{Binding Type, Converter={StaticResource StringToVisibilityConverter}, ConverterParameter='text_input'}">
+                                        <StackPanel>
+                                            <Border Style="{StaticResource SectionBoxStyle}">
+                                                <TextBlock Text="{Binding Type, Converter={StaticResource QuestionTypeConverter}}" Style="{StaticResource SectionHeaderStyle}"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding QuestionText}" Style="{StaticResource ContentStyle}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                            <Border Style="{StaticResource CorrectAnswerStyle}">
+                                                <TextBlock Text="{Binding ExpectedAnswer}" Style="{StaticResource ContentStyle}" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </StackPanel>
+                                    </ContentControl>
+
+                                    <!-- True/False -->
+                                    <ContentControl Visibility="{Binding Type, Converter={StaticResource StringToVisibilityConverter}, ConverterParameter='true_false'}">
+                                        <StackPanel>
+                                            <Border Style="{StaticResource SectionBoxStyle}">
+                                                <TextBlock Text="{Binding Type, Converter={StaticResource QuestionTypeConverter}}" Style="{StaticResource SectionHeaderStyle}"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding QuestionText}" Style="{StaticResource ContentStyle}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Border Margin="0,0,8,0">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border" BasedOn="{StaticResource AnswerItemStyle}">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CorrectAnswer}" Value="True">
+                                                                    <Setter Property="Background" Value="{StaticResource CorrectAnswer}"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <TextBlock Text="True" Style="{StaticResource ContentStyle}" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <Border>
+                                                    <Border.Style>
+                                                        <Style TargetType="Border" BasedOn="{StaticResource AnswerItemStyle}">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CorrectAnswer}" Value="False">
+                                                                    <Setter Property="Background" Value="{StaticResource CorrectAnswer}"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <TextBlock Text="False" Style="{StaticResource ContentStyle}" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </ContentControl>
+
+                                    <!-- Matching -->
+                                    <ContentControl Visibility="{Binding Type, Converter={StaticResource StringToVisibilityConverter}, ConverterParameter='matching'}">
+                                        <StackPanel>
+                                            <Border Style="{StaticResource SectionBoxStyle}">
+                                                <TextBlock Text="{Binding Type, Converter={StaticResource QuestionTypeConverter}}" Style="{StaticResource SectionHeaderStyle}"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding QuestionText}" Style="{StaticResource ContentStyle}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel Grid.Column="0" Margin="0,0,16,0" VerticalAlignment="Center">
+                                                    <ItemsControl ItemsSource="{Binding Pairs}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border Style="{StaticResource CorrectAnswerStyle}">
+                                                                    <TextBlock Text="{Binding Left}" Style="{StaticResource ContentStyle}" VerticalAlignment="Center"/>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                    <ItemsControl ItemsSource="{Binding Pairs}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border Style="{StaticResource CorrectAnswerStyle}">
+                                                                    <TextBlock Text="{Binding Right}" Style="{StaticResource ContentStyle}" VerticalAlignment="Center"/>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </Grid>
+                                        </StackPanel>
+                                    </ContentControl>
+
+                                    <!-- Ordering -->
+                                    <ContentControl Visibility="{Binding Type, Converter={StaticResource StringToVisibilityConverter}, ConverterParameter='ordering'}">
+                                        <StackPanel>
+                                            <Border Style="{StaticResource SectionBoxStyle}">
+                                                <TextBlock Text="{Binding Type, Converter={StaticResource QuestionTypeConverter}}" Style="{StaticResource SectionHeaderStyle}"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding QuestionText}" Style="{StaticResource ContentStyle}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                            <ItemsControl ItemsSource="{Binding OrderedItems}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border Style="{StaticResource CorrectAnswerStyle}">
+                                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding Index, Converter={StaticResource IndexToLetterConverter}}" 
+                                                                           Style="{StaticResource BlueTextStyle}" Margin="0,0,8,0"/>
+                                                                <TextBlock Text="{Binding Text}" Style="{StaticResource ContentStyle}" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </ContentControl>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- Close Button -->
+                    <Button Content="Got it!" 
+                            HorizontalAlignment="Center" 
+                            Margin="0,32,0,16"
+                            Padding="24,12"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Background="{StaticResource Blue1}"
+                            Foreground="{StaticResource TextLight}"
+                            BorderThickness="0"
+                            Click="CloseButton_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" 
+                                        CornerRadius="12"
+                                        Effect="{StaticResource CardShadow}">
+                                    <ContentPresenter HorizontalAlignment="Center" 
+                                                      VerticalAlignment="Center" 
+                                                      Margin="{TemplateBinding Padding}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource Blue2}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</Window>

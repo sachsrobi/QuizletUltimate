@@ -1,0 +1,68 @@
+// You are generating a JSON file for a quiz game. 
+// Follow these rules strictly when creating the content:
+// - OUTPUT a JSON array in the exact format shown below.
+// - PACKAGE the result as a downloadable `.json` file. DO NOT just print it — create a file the user can download.
+// - The language of the questions and answers must match the original document's language.
+// - Each item in the array is a quiz question. Vary the question types as needed (question text: max 160 characters):
+//    - "text_input": Use for definitions, short facts, or fill-in-the-blank (expected_answer: max 4 words).
+//    - "multiple_choice": Use where 2–6 answer options make sense (answer option: max 580 characters). Any number of answers may be correct — from one to all.
+//    - "true_false": Use for factual statements with a clear true/false answer.
+//    - "matching": Use for pairable items, 2–6 pairs (each left/right item: max 320 characters).
+//    - "ordering": Use when items must be arranged in sequence, 2–6 items (each item: max 490 characters).
+// - The word limits are strict upper limits — answers can be much shorter, even just a word or two. Do NOT exceed limits under any circumstances.
+// - Aim for roughly 1–2 quiz questions per meaningful paragraph or distinct concept. Don't force 10 questions from a single sentence, and don’t undersample a long or detailed document.
+// - Every question must have a unique "id".
+// - Follow this output structure exactly, using the same field names and formatting.
+
+[
+  {
+    "id": "q001",
+    "type": "multiple_choice",
+    "question": "Which of the following are mammals?",
+    "answers": [ "Shark", "Dolphin", "Penguin", "Bat" ],
+    "good_answers": [ 1, 3 ]
+  },
+  {
+    "id": "q002",
+    "type": "text_input",
+    "question": "What is the capital of Japan?",
+    "expected_answer": "Tokyo"
+  },
+  {
+    "id": "q003",
+    "type": "true_false",
+    "question": "Water boils at 100 degrees Celsius at sea level.",
+    "correct_answer": true
+  },
+  {
+    "id": "q004",
+    "type": "matching",
+    "question": "Match the animals to their habitats.",
+    "pairs": [
+      {
+        "left": "Camel",
+        "right": "Desert"
+      },
+      {
+        "left": "Polar Bear",
+        "right": "Arctic"
+      },
+      {
+        "left": "Frog",
+        "right": "Swamp"
+      }
+    ]
+  },
+  {
+    "id": "q005",
+    "type": "ordering",
+    "question": "Arrange these historical events in chronological order.",
+    "items": [
+      "French Revolution",
+      "American Declaration of Independence",
+      "Fall of the Berlin Wall",
+      "Moon Landing"
+    ],
+    "correct_order": [ 1, 0, 3, 2 ]
+  }
+]
